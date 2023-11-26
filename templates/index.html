@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lung Image Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Lung Image Classifier</h1>
+    <label for="imageInput">Choose an image</label>
+    <input type="file" id="imageInput" accept="image/*" onchange="previewImage()">
+    <div id="imagePreview"></div>
+    <button onclick="predict()">Predict</button>
+    <div id="predictions"></div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
