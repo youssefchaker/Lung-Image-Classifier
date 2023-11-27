@@ -1,3 +1,5 @@
+<!-- index.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,9 +19,14 @@
     <input type="file" id="imageInput" accept="image/*" onchange="previewImage()">
     <div id="imagePreview"></div>
     
-    <button onclick="predict()">Predict</button>
+    <div id="buttonContainer">
+        <button id="predictButton" onclick="predict()">Predict</button>
+        <button id="trainButton" onclick="trainModel()">Train</button>
+    </div>
+    
     <div id="predictions"></div>
     <div id="errorMessages"></div>
+    <div id="loadingSpinner"></div>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

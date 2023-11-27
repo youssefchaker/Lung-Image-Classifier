@@ -3,8 +3,12 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import numpy as np
 from PIL import Image
+import subprocess
 
 app = Flask(__name__, template_folder='templates')
+
+# Flag to indicate training status
+training_status = {'status': 'idle'}
 
 def preprocess_image(img):
     # Convert the image to grayscale
@@ -34,6 +38,18 @@ def decode_predictions(predictions):
         decoded_preds[classes[i]] = float((pred)*100)
     return decoded_preds
 
+def train_model():
+    global training_status
+    training_status['status'] = 'training'
+
+    # Execute the train.py script using subprocess
+    try:
+        subprocess.run(['python', 'train.py'], check=True)
+    except subprocess.CalledProcessError as e:
+        print('Error during training:', e)
+    
+    training_status['status'] = 'idle'
+
 @app.route('/')
 def main_page():
     return render_template('index.html')
@@ -62,6 +78,21 @@ def predict():
         return jsonify({'predictions': decoded_predictions})
     except Exception as e:
         return jsonify({'error': str(e)})
+
+@app.route('/train', methods=['POST'])
+def train():
+    global training_status
+    if training_status['status'] == 'idle':
+        # Start training
+        train_model()
+        return jsonify({'success': True, 'message': 'Training completed.'})
+    else:
+        return jsonify({'success': False, 'message': 'Training in progress.'})
+
+@app.route('/training_status', methods=['GET'])
+def get_training_status():
+    global training_status
+    return jsonify(training_status)
 
 if __name__ == '__main__':
     app.run(debug=True)

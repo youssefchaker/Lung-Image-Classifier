@@ -14,6 +14,42 @@ function previewImage() {
     }
 }
 
+function trainModel() {
+    const errorMessages = document.getElementById('errorMessages');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const predictionsDiv = document.getElementById('predictions');
+    predictionsDiv.innerHTML = '';
+    errorMessages.innerHTML = '';  // Clear previous error messages
+
+    // Show loading spinner
+    loadingSpinner.style.display = 'block';
+
+    // Disable buttons during training
+    document.getElementById('predictButton').disabled = true;
+    document.getElementById('trainButton').disabled = true;
+
+    fetch('/train', {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            errorMessages.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        errorMessages.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+    })
+    .finally(() => {
+        // Hide loading spinner and enable buttons
+        loadingSpinner.style.display = 'none';
+        document.getElementById('predictButton').disabled = false;
+        document.getElementById('trainButton').disabled = false;
+    });
+}
+
+
 function predict() {
     const input = document.getElementById('imageInput');
     const file = input.files[0];
@@ -43,4 +79,19 @@ function predict() {
         }
     })
     .catch(error => console.error('Error:', error));
+}
+function disableButtons() {
+    const predictButton = document.getElementById('predictButton');
+    const trainButton = document.getElementById('trainButton');
+    
+    predictButton.disabled = true;
+    trainButton.disabled = true;
+}
+
+function enableButtons() {
+    const predictButton = document.getElementById('predictButton');
+    const trainButton = document.getElementById('trainButton');
+    
+    predictButton.disabled = false;
+    trainButton.disabled = false;
 }
