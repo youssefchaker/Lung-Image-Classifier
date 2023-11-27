@@ -3,7 +3,7 @@ function previewImage() {
     const errorMessages = document.getElementById('errorMessages');
     const preview = document.getElementById('imagePreview');
 
-    errorMessages.innerHTML = '';  // Clear previous error messages
+    errorMessages.innerHTML = ''; 
 
     if (input.files && input.files[0]) {
         const reader = new FileReader();
@@ -19,12 +19,10 @@ function trainModel() {
     const loadingSpinner = document.getElementById('loadingSpinner');
     const predictionsDiv = document.getElementById('predictions');
     predictionsDiv.innerHTML = '';
-    errorMessages.innerHTML = '';  // Clear previous error messages
+    errorMessages.innerHTML = '';
 
-    // Show loading spinner
     loadingSpinner.style.display = 'block';
 
-    // Disable buttons during training
     document.getElementById('predictButton').disabled = true;
     document.getElementById('trainButton').disabled = true;
 
@@ -42,20 +40,17 @@ function trainModel() {
         errorMessages.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
     })
     .finally(() => {
-        // Hide loading spinner and enable buttons
         loadingSpinner.style.display = 'none';
         document.getElementById('predictButton').disabled = false;
         document.getElementById('trainButton').disabled = false;
     });
 }
 
-
 function predict() {
     const input = document.getElementById('imageInput');
     const file = input.files[0];
     const errorMessages = document.getElementById('errorMessages');
 
-    // Clear previous error messages
     errorMessages.innerHTML = '';
 
     if (!file) {
@@ -80,6 +75,7 @@ function predict() {
     })
     .catch(error => console.error('Error:', error));
 }
+
 function disableButtons() {
     const predictButton = document.getElementById('predictButton');
     const trainButton = document.getElementById('trainButton');
