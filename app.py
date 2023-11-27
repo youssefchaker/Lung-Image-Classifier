@@ -1,19 +1,10 @@
-# app.py
 from flask import Flask, render_template, request, jsonify
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
-from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import numpy as np
-import os
 from PIL import Image
 
 app = Flask(__name__, template_folder='templates')
-
-# Load the model from the same directory as app.py
-model_path = 'model.h5'
-model = load_model(model_path)
-
-
 
 def preprocess_image(img):
     # Convert the image to grayscale
@@ -36,7 +27,6 @@ def preprocess_image(img):
 
     return img_array
 
-
 def decode_predictions(predictions):
     classes = ['COVID', 'NORMAL', 'PNEUMONIA']
     decoded_preds = {}
@@ -51,8 +41,13 @@ def main_page():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Get the image from the request
+        # Get the image and model choice from the request
         img = Image.open(request.files['image'].stream).convert("RGB")
+        model_choice = request.form.get('model_choice', 'model')  # Default to model1 if not provided
+
+        # Load the selected model
+        model_path = f'{model_choice}.h5'
+        model = load_model(model_path)
 
         # Preprocess the image
         preprocessed_img = preprocess_image(img)
