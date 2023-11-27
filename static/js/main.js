@@ -1,6 +1,9 @@
 function previewImage() {
     const input = document.getElementById('imageInput');
+    const errorMessages = document.getElementById('errorMessages');
     const preview = document.getElementById('imagePreview');
+
+    errorMessages.innerHTML = '';  // Clear previous error messages
 
     if (input.files && input.files[0]) {
         const reader = new FileReader();
@@ -14,6 +17,15 @@ function previewImage() {
 function predict() {
     const input = document.getElementById('imageInput');
     const file = input.files[0];
+    const errorMessages = document.getElementById('errorMessages');
+
+    // Clear previous error messages
+    errorMessages.innerHTML = '';
+
+    if (!file) {
+        errorMessages.innerHTML = '<p style="color: red;">Please choose an image.</p>';
+        return;
+    }
 
     const formData = new FormData();
     formData.append('image', file);
