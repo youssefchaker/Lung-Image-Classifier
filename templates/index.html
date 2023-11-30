@@ -9,10 +9,10 @@
 <body>
     <h1>Lung Image Classifier</h1>
     <label for="imageInput">Choose an image</label>
-    <select id="modelSelect" onchange="selectModel()">
-        <option value="model1">Model 1</option>
-        <option value="model2">Model 2</option>
-        <option value="model3">Model 3</option>
+    <select id="modelSelect">
+        <option value="Custom_model">Custom Model</option>
+        <option value="Dense_model">Dense Model</option>
+        <option value="Googlenet_model">Googlenet Model</option>
     </select>
     <input type="file" id="imageInput" accept="image/*" onchange="previewImage()">
     <div id="imagePreview"></div>

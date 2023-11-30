@@ -29,8 +29,11 @@ def train_model():
     global training_status
     training_status['status'] = 'training'
     try:
-        model_choice = request.form.get('model_choice', 'model')
-        subprocess.run(['python', model_choice+'_training.py'], check=True)
+        # Get the selected model from the JSON request
+        model_choice = request.json.get('model_choice', 'model')
+        
+        # Run the corresponding training file
+        subprocess.run(['python', f'{model_choice}_training.py'], check=True)
     except subprocess.CalledProcessError as e:
         print('Error during training:', e)
     training_status['status'] = 'idle'
@@ -43,8 +46,8 @@ def main_page():
 def predict():
     try:
         img = Image.open(request.files['image'].stream).convert("RGB")
-        model_choice = request.form.get('model_choice', 'model')
-        model_path = f'{model_choice}.h5'
+        model_choice = request.form.get('model_choice', 'Custom_model')
+        model_path = f'{model_choice}.h5'  # Fix the concatenation here
         model = load_model(model_path)
         preprocessed_img = preprocess_image(img)
         predictions = model.predict(preprocessed_img)
@@ -52,6 +55,8 @@ def predict():
         return jsonify({'predictions': decoded_predictions})
     except Exception as e:
         return jsonify({'error': str(e)})
+
+
 
 @app.route('/train', methods=['POST'])
 def train():

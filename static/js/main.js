@@ -21,18 +21,28 @@ function trainModel() {
     predictionsDiv.innerHTML = '';
     errorMessages.innerHTML = '';
 
+    // Get the selected model from the dropdown
+    const selectedModel = document.getElementById('modelSelect').value;
+
+    // Show loading spinner
     loadingSpinner.style.display = 'block';
 
+    // Disable buttons during training
     document.getElementById('predictButton').disabled = true;
     document.getElementById('trainButton').disabled = true;
 
+    // Fetch to the '/train' route with the selected model
     fetch('/train', {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ model_choice: selectedModel }),  // Pass the selected model
     })
     .then(response => response.json())
     .then(data => {
         if (!data.success) {
-            errorMessages.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+            errorMessages.innerHTML = `<p style="color: red;">Error: ${data.message}</p>`;
         }
     })
     .catch(error => {
@@ -40,16 +50,19 @@ function trainModel() {
         errorMessages.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
     })
     .finally(() => {
+        // Hide loading spinner and enable buttons
         loadingSpinner.style.display = 'none';
         document.getElementById('predictButton').disabled = false;
         document.getElementById('trainButton').disabled = false;
     });
 }
 
+
 function predict() {
     const input = document.getElementById('imageInput');
     const file = input.files[0];
     const errorMessages = document.getElementById('errorMessages');
+    const modelChoice = document.getElementById('modelSelect').value;
 
     errorMessages.innerHTML = '';
 
@@ -60,6 +73,7 @@ function predict() {
 
     const formData = new FormData();
     formData.append('image', file);
+    formData.append('model_choice', modelChoice);
 
     fetch('/predict', {
         method: 'POST',
@@ -67,6 +81,7 @@ function predict() {
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Success:', data);
         const predictionsDiv = document.getElementById('predictions');
         predictionsDiv.innerHTML = '<h3>Predictions:</h3>';
         for (const [classLabel, probability] of Object.entries(data.predictions)) {
@@ -75,6 +90,8 @@ function predict() {
     })
     .catch(error => console.error('Error:', error));
 }
+
+
 
 function disableButtons() {
     const predictButton = document.getElementById('predictButton');
