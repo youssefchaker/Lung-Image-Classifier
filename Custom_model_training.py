@@ -14,7 +14,7 @@ Custom_Model.summary()
 
 Custom_Model.compile(loss='categorical_crossentropy', optimizer=Adam(), metrics=['accuracy'])
 
-fle_s='Custom_Model.h5'
+fle_s=r'TestTraining/Custom_Model.h5'
 checkpointer = ModelCheckpoint(fle_s, monitor='loss',verbose=1,save_best_only=True,
                                save_weights_only=False, mode='auto',save_freq='epoch')
 

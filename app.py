@@ -32,6 +32,7 @@ def train_model():
         # Get the selected model from the JSON request
         model_choice = request.json.get('model_choice', 'model')
         
+        print(f'training : {model_choice}')
         # Run the corresponding training file
         subprocess.run(['python', f'{model_choice}_training.py'], check=True)
     except subprocess.CalledProcessError as e:
@@ -40,14 +41,15 @@ def train_model():
 
 @app.route('/')
 def main_page():
-    return render_template('index.html')
+    return render_template('presentation.html')
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
         img = Image.open(request.files['image'].stream).convert("RGB")
         model_choice = request.form.get('model_choice', 'Custom_model')
-        model_path = f'{model_choice}.h5'  # Fix the concatenation here
+        model_path = f'datasets\Models\{model_choice}.h5'  # Fix the concatenation here
         model = load_model(model_path)
         preprocessed_img = preprocess_image(img)
         predictions = model.predict(preprocessed_img)

@@ -1,6 +1,6 @@
 function previewImage() {
     const input = document.getElementById('imageInput');
-    const errorMessages = document.getElementById('errorMessages');
+    const errorMessages = document.getElementById('errorMessagesPredict');
     const preview = document.getElementById('imagePreview');
 
     errorMessages.innerHTML = ''; 
@@ -8,17 +8,15 @@ function previewImage() {
     if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = function (e) {
-            preview.innerHTML = `<img src="${e.target.result}" alt="Selected Image" style="max-width:100%;">`;
+            preview.style.backgroundImage = "url('" + e.target.result + "')";
         };
         reader.readAsDataURL(input.files[0]);
     }
 }
 
 function trainModel() {
-    const errorMessages = document.getElementById('errorMessages');
+    const errorMessages = document.getElementById('errorMessagestrain');
     const loadingSpinner = document.getElementById('loadingSpinner');
-    const predictionsDiv = document.getElementById('predictions');
-    predictionsDiv.innerHTML = '';
     errorMessages.innerHTML = '';
 
     // Get the selected model from the dropdown
@@ -42,12 +40,12 @@ function trainModel() {
     .then(response => response.json())
     .then(data => {
         if (!data.success) {
-            errorMessages.innerHTML = `<p style="color: red;">Error: ${data.message}</p>`;
+            errorMessages.innerHTML = `<p class="alert alert-danger text-white font-weight-bold" role="alert">Error: ${data.message}</p>`;
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        errorMessages.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+        errorMessages.innerHTML = `<p class="alert alert-danger text-white font-weight-bold" role="alert">Error: ${error.message}</p>`;
     })
     .finally(() => {
         // Hide loading spinner and enable buttons
@@ -61,13 +59,13 @@ function trainModel() {
 function predict() {
     const input = document.getElementById('imageInput');
     const file = input.files[0];
-    const errorMessages = document.getElementById('errorMessages');
-    const modelChoice = document.getElementById('modelSelect').value;
+    const errorMessages = document.getElementById('errorMessagesPredict');
+    const modelChoice = document.getElementById('modelSelect2').value;
 
     errorMessages.innerHTML = '';
 
     if (!file) {
-        errorMessages.innerHTML = '<p style="color: red;">Please choose an image.</p>';
+        errorMessages.innerHTML = '<p class="alert alert-danger text-white font-weight-bold" role="alert">Please choose an image.</p>';
         return;
     }
 
@@ -83,9 +81,13 @@ function predict() {
     .then(data => {
         console.log('Success:', data);
         const predictionsDiv = document.getElementById('predictions');
-        predictionsDiv.innerHTML = '<h3>Predictions:</h3>';
+
+        predictionsDiv.style.display ="block";
+        predictionsDiv.innerHTML = `<h4 class="text-white">Predictions:</h4>`;
+        i=0;
         for (const [classLabel, probability] of Object.entries(data.predictions)) {
-            predictionsDiv.innerHTML += `<p>${classLabel}: ${parseInt((probability))+"%"}</p>`;
+            i++;
+            i ===3? predictionsDiv.innerHTML += `<span>${classLabel}: ${parseInt((probability))+"%"}</span> ` : predictionsDiv.innerHTML += `<span>${classLabel}: ${parseInt((probability))+"%"} / </span> `;
         }
     })
     .catch(error => console.error('Error:', error));

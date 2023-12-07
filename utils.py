@@ -46,10 +46,15 @@ from keras.models import Sequential
 from keras.layers import Conv2D, BatchNormalization, MaxPooling2D, Flatten, Dense, Dropout
 from keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint
+import os
 epochs=10
 
-train_dir = r'C:\Users\Youssefch\Desktop\studies\IAprj\app\data\train'
-val_dir = r'C:\Users\Youssefch\Desktop\studies\IAprj\app\data\test'
+# Get the current working directory
+current_dir = os.getcwd()
+
+# Construct the paths relative to the current file
+train_dir = os.path.join(current_dir, 'datasets', 'train')
+val_dir = os.path.join(current_dir, 'datasets', 'test')
 train_datagen = ImageDataGenerator(rescale=1./255)
 val_datagen = ImageDataGenerator(rescale=1./255)
 

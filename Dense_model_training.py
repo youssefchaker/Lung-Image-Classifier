@@ -18,7 +18,7 @@ Dense_Model.summary()
 
 Dense_Model.compile(loss='categorical_crossentropy', optimizer=Adam(), metrics=['accuracy'])
 
-file_s = 'Dense_Model.h5'
+file_s = r'TestTraining/Dense_Model.h5'
 checkpointer = ModelCheckpoint(file_s, monitor='loss', verbose=1, save_best_only=True, save_weights_only=False, save_freq='epoch')
 
 callback_list=[checkpointer]

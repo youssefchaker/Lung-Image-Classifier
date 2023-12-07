@@ -31,7 +31,7 @@ Googlenet_model.summary()
 
 Googlenet_model.compile(loss='categorical_crossentropy', optimizer=Adam(learning_rate=0.001), metrics=['accuracy'])
 
-fle_s='Googlenet_Model.h5'
+fle_s=r'TestTraining/Googlenet_Model.h5'
 checkpointer = ModelCheckpoint(fle_s, monitor='loss',verbose=1,save_best_only=True,
                                save_weights_only=False, mode='auto',save_freq='epoch')
 
