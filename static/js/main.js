@@ -87,7 +87,7 @@ function predict() {
         i=0;
         for (const [classLabel, probability] of Object.entries(data.predictions)) {
             i++;
-            i ===3? predictionsDiv.innerHTML += `<span>${classLabel}: ${parseInt((probability))+"%"}</span> ` : predictionsDiv.innerHTML += `<span>${classLabel}: ${parseInt((probability))+"%"} / </span> `;
+            i ===3? predictionsDiv.innerHTML += `<span>${classLabel}: ${((probability.toFixed(2)))+"%"}</span> ` : predictionsDiv.innerHTML += `<span>${classLabel}: ${((probability.toFixed(2)))+"%"} / </span> `;
         }
     })
     .catch(error => console.error('Error:', error));
