@@ -29,11 +29,9 @@ def train_model():
     global training_status
     training_status['status'] = 'training'
     try:
-        # Get the selected model from the JSON request
         model_choice = request.json.get('model_choice', 'model')
         
         print(f'training : {model_choice}')
-        # Run the corresponding training file
         subprocess.run(['python', f'{model_choice}_training.py'], check=True)
     except subprocess.CalledProcessError as e:
         print('Error during training:', e)
@@ -49,7 +47,7 @@ def predict():
     try:
         img = Image.open(request.files['image'].stream).convert("RGB")
         model_choice = request.form.get('model_choice', 'Custom_model')
-        model_path = f'datasets\Models\{model_choice}.h5'  # Fix the concatenation here
+        model_path = f'datasets\Models\{model_choice}.h5'
         model = load_model(model_path)
         preprocessed_img = preprocess_image(img)
         predictions = model.predict(preprocessed_img)

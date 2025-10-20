@@ -49,10 +49,8 @@ from keras.callbacks import ModelCheckpoint
 import os
 epochs=10
 
-# Get the current working directory
 current_dir = os.getcwd()
 
-# Construct the paths relative to the current file
 train_dir = os.path.join(current_dir, 'datasets', 'train')
 val_dir = os.path.join(current_dir, 'datasets', 'test')
 train_datagen = ImageDataGenerator(rescale=1./255)
