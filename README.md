@@ -6,7 +6,7 @@ This is a web application that uses a deep learning model to classify lung X-ray
 
 *   **Prediction:** Upload a lung X-ray image and get a prediction from a trained model.
 *   **Multiple Models:** The application supports different deep learning models:
-    *   A custom Convolutional Neural Network (CNN)
+    *   A custom Convolutional Neural Network (CNN) 
     *   DenseNet
     *   GoogleNet
 *   **Training:** The ability to retrain the models using the provided training scripts.
